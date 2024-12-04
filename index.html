@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .riddle {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #image {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Riddle Game</h1>
+    <div class="riddle">
+        I measure risk, I find the way, <br>
+        Through numbers' dance and data's play. <br>
+        With math and code, I craft the key, <br>
+        To markets' moves, unseen by thee. <br>
+        <strong>What am I?</strong>
+    </div>
+    <input type="text" id="answer" placeholder="Your answer here...">
+    <button onclick="checkAnswer()">Submit</button>
+    <div id="result"></div>
+    <img id="image" src="https://i0.wp.com/airdropalert.com/wp-content/uploads/2024/11/quant.webp?resize=1024%2C656&ssl=1" alt="Correct Answer!">
+
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById("answer").value.trim().toLowerCase();
+            const resultDiv = document.getElementById("result");
+            const image = document.getElementById("image");
+
+            if (answer === "quant") {
+                resultDiv.textContent = "Correct! Here's your reward:";
+                image.style.display = "block";
+            } else {
+                resultDiv.textContent = "Try again!";
+                image.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
