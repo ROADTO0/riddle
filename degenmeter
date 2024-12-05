@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #f4f4f4;
+        }
+        .riddle-container {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        .riddle-image-container {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        .answer-status {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .green-text {
+            color: green;
+        }
+        .red-text {
+            color: red;
+        }
+        .final-result {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .twitter-share {
+            margin-top: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #1DA1F2;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .twitter-share:hover {
+            background-color: #0d8bec;
+        }
+    </style>
+</head>
+<body>
+    <h1>DegenMeter</h1>
+    <p>CA: 23423423</p>
+    <p>$DEG</p>
+    
+    <div class="riddle-container" id="riddle-container"></div>
+    <input type="text" id="answer" placeholder="Your answer here...">
+    <button onclick="checkAnswer()">Submit</button>
+    <div id="result" class="answer"></div>
+
+    <div class="riddle-image-container" id="image-container"></div>
+    <div id="answer-status" class="answer-status"></div>
+
+    <script>
+        const riddles = [
+            { 
+                text: `I measure risk, I find the way, 
+Through numbers' dance and data's play. 
+With math and code, I craft the key, 
+To markets' moves, unseen by thee. 
+What am I?`, 
+                answer: "quant", 
+                image: "https://www.mundodeportivo.com/us/files/article_main_microformat/uploads/2024/11/20/673d8ff19b9b6.png"
+            },
+            { 
+                text: `I take big risks, I don't play it safe,
+Jumping into coins, no fear of a chase.
+I don’t check the charts, nor follow a plan,
+Just hoping my luck will make me a fan.
+Who am I?`, 
+                answer: "degen", 
+                image: "https://woolypooly.com/en/blog/wp-content/uploads/2023/07/image-4-1024x683.png"
+            },
+            {
+                text: `I rush into the market, no time to think,
+Buying coins fast, without even a blink.
+Chasing hype and trends, I’m quick to invest,
+What do they call me when I act with no rest?`,
+                answer: "ape",
+                image: "https://assets3.cbsnewsstatic.com/hub/i/r/2022/03/24/c94ad4a2-2938-4881-b496-53bc7e7c9dbc/thumbnail/1200x630/35c5043d1ebfd5e86d38dda24b227671/bored-ape-bayc2-the-block-crypto.jpg?v=6056e68389c16974d8d95eeea60b7a3a"
+            },
+            {
+                text: `The market dips, the price drops low,
+But I hold my coins, I won’t let go.
+Through the ups and downs, I stay on track,
+Who am I, refusing to turn back?`,
+                answer: "hodler",
+                image: "https://www.vevepedia.com/wp-content/uploads/2022/01/diamond-hands-300x224.jpg"
+            },
+            {
+                text: `The price is high, but I feel the fear,
+I sell my coins, though the end is near.
+I panic and run when the market dips,
+Who am I, selling quick with trembling grips?`,
+                answer: "jeet",
+                image: "https://miro.medium.com/v2/resize:fit:1024/1*4AJpubYkDJ3_9FfVyxYMmA.png"
+            },
+            {
+                text: `I’m known for rockets and cars that fly,
+I tweet about coins, and they reach the sky.
+From Dogecoin to memes, I’ve made my mark,
+Who am I, setting trends that spark?`,
+                answer: "elon musk",
+                image: "https://images.news18.com/ibnlive/uploads/2021/04/1619332442_untitled-design-2021-04-25t120052.407.png?im=FitAndFill=(1200,900)"
+            },
+            {
+                text: `I hold so many coins, my wallet is wide,
+When I make a move, the markets collide.
+I swim in the depths, with power and sway,
+Who am I, making waves in the crypto bay?`,
+                answer: "whale",
+                image: "https://static.news.bitcoin.com/wp-content/uploads/2024/01/whaler.jpg"
+            },
+            {
+                text: `I’m a phrase that warns you to think for yourself,
+Don’t just follow the crowd or rely on someone else.
+Before you invest, take time to explore,
+What’s the advice I give to avoid being a bore?`,
+                answer: "DYOR",
+                image: "https://www.xcritical.com/wp-content/uploads/2022/09/how-to-do-your-own-research-dyor-before-investing-in-crypto-768x510.webp"
+            },
+            {
+                text: `Prices rise, they soar with might,
+The crowd’s excited, the future’s bright.
+It happens fast, the gains are loud,
+What do we call this moment, as the market's proud?`,
+                answer: "pump",
+                image: "https://www.shutterstock.com/image-vector/dogecoin-doge-cryptocurrency-price-rises-600nw-2029614518.jpg"
+            },
+            {
+                text: `The market was high, but now it's low,
+The price falls fast, and traders know,
+That someone’s selling, taking the leap,
+Leaving others with losses so deep.`,
+                answer: "dump",
+                image: "https://g.wsj.net/cryptocurrency-schemes-generate-big-coin/img/buyBYE.png"
+            }
+        ];
+
+        let currentRiddleIndex = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        function displayRiddle() {
+            const riddleContainer = document.getElementById("riddle-container");
+            const imageContainer = document.getElementById("image-container");
+            const resultDiv = document.getElementById("result");
+            const answerStatus = document.getElementById("answer-status");
+
+            if (currentRiddleIndex < riddles.length) {
+                riddleContainer.textContent = riddles[currentRiddleIndex].text;
+                resultDiv.textContent = "";
+                answerStatus.textContent = "";
+                imageContainer.innerHTML = ""; // Görseli temizle
+                document.getElementById("answer").value = ""; // Cevap alanını temizle
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("answer").value.trim().toLowerCase();
+            const resultDiv = document.getElementById("result");
+            const imageContainer = document.getElementById("image-container");
+            const answerStatus = document.getElementById("answer-status");
+
+            if (currentRiddleIndex < riddles.length) {
+                const correctAnswer = riddles[currentRiddleIndex].answer;
+                const imageSrc = riddles[currentRiddleIndex].image;
+
+                // Kullanıcı cevabını kontrol et
+                if (userAnswer === correctAnswer) {
+                    resultDiv.textContent = "Correct!";
+                    answerStatus.textContent = "True Answer";
+                    answerStatus.className = "green-text";
+                    correctCount++;
+                } else {
+                    resultDiv.textContent = `Wrong! The correct answer was: ${correctAnswer}`;
+                    answerStatus.textContent = "False Answer";
+                    answerStatus.className = "red-text";
+                    wrongCount++;
+                }
+
+                // Görseli yükle
+                imageContainer.innerHTML = `<img src="${imageSrc}" alt="Answer Image" onerror="handleImageError(this)">`;
+
+                // Bir sonraki riddle'a geç
+                currentRiddleIndex++;
+                setTimeout(displayRiddle, 2000); // 3 saniye bekle ve sonraki riddle'ı göster
+            }
+        }
+
+        function showFinalResult() {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `
+                <div class="final-result">Game Over! Degen Level: ${correctCount}</div>
+                <p>True Answers: <span class="green-text">${correctCount}</span></p>
+                <p>False Answers: <span class="red-text">${wrongCount}</span></p>
+                <a href="https://x.com/intent/post?text=I+completed+the+DegenMeter.+My+Degen+Level+is+${correctCount}/10+%24DEG"
+    		    target="_blank" 
+                    class="twitter-share">Share on Twitter</a>
+
+            `;
+        }
+
+        function handleImageError(img) {
+            img.src = "https://via.placeholder.com/300?text=Image+Not+Found"; // Hata durumunda yedek görsel
+        }
+
+        // İlk riddle'ı göster
+        displayRiddle();
+    </script>
+</body>
+</html>
